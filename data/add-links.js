@@ -1,6 +1,6 @@
 var url = window.location.href;
 var baseurl = url.replace(
-  /(([^>\/]+\/){2}(interface|src)\/.+.(h|cc))/g,
+  /(([^>\/]+\/){2}(interface|src|plugins)\/.+.(h|cc))/g,
   ""
 );
 
