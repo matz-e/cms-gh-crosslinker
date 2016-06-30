@@ -6,7 +6,7 @@ var baseurl = url.replace(
 
 $(".pl-s").each(function() {
   var html = $(this).html();
-  var matches = html.match(/(([^>\/]+\/){2}interface\/.+.h)/g);
+  var matches = html.match(/(([^>\/]+\/){2}(interface|src)\/.+.h)/g);
 
   if (!matches)
     return;
