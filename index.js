@@ -3,7 +3,7 @@ var pageMod = require("sdk/page-mod")
 
 pageMod.PageMod({
   include: [
-    /.*github\.com\/[^\/]*\/cmssw\/.*(\.cc|\.h)/
+    /.*github\.com\/[^\/]*\/cmssw\/.*(\.cc|\.h)(#.*)?/
   ],
   contentScriptFile: [
     self.data.url("zepto.min.js"),
