@@ -11,6 +11,16 @@ pageMod.PageMod({
   ]
 });
 
+pageMod.PageMod({
+  include: [
+    /.*github\.com\/[^\/]*\/cmssw\/.*(\.py)(#.*)?/
+  ],
+  contentScriptFile: [
+    self.data.url("zepto.min.js"),
+    self.data.url("add-py-links.js")
+  ]
+});
+
 // a dummy function, to show how tests work.
 // to see how to test this function, look at test/test-index.js
 function dummy(text, callback) {
