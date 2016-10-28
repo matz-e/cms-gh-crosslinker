@@ -7,7 +7,7 @@ pageMod.PageMod({
   ],
   contentScriptFile: [
     self.data.url("zepto.min.js"),
-    self.data.url("add-links.js")
+    self.data.url("add-cpp-links.js")
   ]
 });
 
