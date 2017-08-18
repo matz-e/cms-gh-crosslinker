@@ -13,14 +13,26 @@ function addPyPath(cell, pyload) {
   if (path.length < 3)
     return
 
+  var text;
+  $(cell).contents().each(function() {
+    if (this.nodeType == 3 && $(this).text().trim() == path.join('.')) {
+      text = this;
+    }
+  });
+
   path.splice(2, 0, 'python');
   var py = path.join('/') + '.py';
-  var html = cell.html();
+  var pypath = $(text).text().trim();
+  var prespace = $(text).text().match(/^\s*/)[0];
+  var postspace = $(text).text().match(/\s*$/)[0];
 
   $.ajax({
     "url": baseurl + py,
     "success": function() {
-      cell.html(html.replace(pyload, "<a href=\"" + baseurl + py + "\">" + pyload + "</a>"));
+      var link = $("<a>" + pypath + "</a>").attr("href", baseurl + py);
+      $(text).replaceWith(link);
+      $(link).before(prespace);
+      $(link).after(postspace);
     }
   });
 }

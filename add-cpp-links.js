@@ -9,21 +9,30 @@ var localurl = url.replace(
 );
 
 $(".pl-s").each(function() {
-  var html = $(this).html();
+  var text;
+  $(this).contents().each(function() {
+    if (this.nodeType == 3) {
+      text = this;
+    }
+  });
+
+  var html = $(text).text();
   var fullmatch = html.match(/(([^>\/]+\/){2}(interface|src)\/.+.h)/g);
+  var cell = $(this).closest("td");
 
   if (fullmatch) {
     var h = fullmatch[0];
     var cc = h.replace(/.h$/, ".cc").replace("/interface/", "/src/");
 
-    $(this).html(html.replace(h, "<a href=\"" + baseurl + h + "\">" + h + "</a>"));
-
-    var cell = $(this).closest("td");
+    $(text).wrap($("<a/>").attr("href", baseurl + h));
 
     $.ajax({
       "url": baseurl + cc,
       "success": function() {
-        cell.append("<span class=\"pl-c\"> (<a href=\"" + baseurl + cc + "\">.cc</a>)</span>");
+        cell.append($("<a>.cc</a>").attr("href", baseurl + cc));
+        $(cell).children().last().wrap($("<span/>").attr("class", "pl-c"));
+        $(cell).children().last().prepend(" (");
+        $(cell).children().last().append(")");
       }
     });
 
@@ -35,26 +44,29 @@ $(".pl-s").each(function() {
     var h = localmatch[0];
     var cc = h.replace(/.h$/, ".cc").replace("/interface/", "/src/");
 
-    var span = $(this);
-    var cell = $(this).closest("td");
-
     $.ajax({
       "url": localurl + h,
       "success": function() {
-        span.html(html.replace(h, "<a href=\"" + localurl + h + "\">" + h + "</a>"));
+        $(text).wrap($("<a/>").attr("href", localurl + h));
 
         // header available - is the source?
         $.ajax({
           "url": localurl + cc,
           "success": function() {
-            cell.append("<span class=\"pl-c\"> (<a href=\"" + localurl + cc + "\">.cc</a>)</span>");
+            cell.append($("<a>.cc</a>").attr("href", localurl + cc));
+            $(cell).children().last().wrap($("<span/>").attr("class", "pl-c"));
+            $(cell).children().last().prepend(" (");
+            $(cell).children().last().append(")");
           },
           "failure": function() {
             url = localurl.replace("/interface/", "/src/")
             $.ajax({
               "url": url + cc,
               "success": function() {
-                cell.append("<span class=\"pl-c\"> (<a href=\"" + url + cc + "\">.cc</a>)</span>");
+                cell.append($("<a>.cc</a>").attr("href", url + cc));
+                $(cell).children().last().wrap($("<span/>").attr("class", "pl-c"));
+                $(cell).children().last().prepend(" (");
+                $(cell).children().last().append(")");
               }
             });
           }
